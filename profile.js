@@ -1,5 +1,7 @@
 'use strict';
 
+const toSemver = require('to-semver');
+
 module.exports = function get_profile(cwd, profile, cla) {
 	const fs = require('fs');
 	const path = require('path');
@@ -26,35 +28,30 @@ module.exports = function get_profile(cwd, profile, cla) {
 	let numbers = /\d+/g;
 	if (!version && version !== 0) {
 		let folders = fs.readdirSync(source).filter(dir => fs.statSync(path.join(source, dir)).isDirectory());
-		let max = 10000;
-		let mapper = (n) => { return n.match(numbers); };
-		let reducer = (current, value, index) => {
-			return current + value * (max / Math.pow(10, index));
-		};
-		folders.sort((a, b) => {
-			a = a.split('.').map(mapper).reduce(reducer, 0);
-			b = b.split('.').map(mapper).reduce(reducer, 0);
-			return (b - a);
-		});
-		version = folders[0];
+		if (folders.length) {
+			version = toSemver(folders, { includePrereleases: true, clean: false })[0];
+		} else {
+			console.log('No version folders found.');
+		}
 	}
+	console.log('Selected version: ' + version);
 
 	let isPolyfilled = !!cla.options.polyfilled;
 
 	config.entry = path.join(source, version, isPolyfilled ? config.source.polyfilled : config.source.file);
-	config.built = (config.built || {});
-	config.built.folder = path.join(root, config.built.folder);
+	config.build = (config.build || {});
+	config.build.folder = path.join(root, config.build.folder);
 
 	//generte full path
-	let full = path.join(config.built.folder, config.built.file);
-	config.built.full = full;
-	config.built.fullMap = full + '.map';
+	let full = path.join(config.build.folder, config.build.file);
+	config.build.full = full;
+	config.build.fullMap = full + '.map';
 
 	//generate minned path
 	let builtExt = path.extname(full);
 	let min = full.substring(0, full.length - builtExt.length) + '.min' + builtExt;
-	config.built.min = min;
-	config.built.minMap = min + '.map';
+	config.build.min = min;
+	config.build.minMap = min + '.map';
 
 	hasTransformed = true;
 	cached = config;
