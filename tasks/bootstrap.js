@@ -29,7 +29,7 @@ module.exports = function task_bootstrap(cla) {
 
 		//if package.json->parcello doesn't exist, create it
 		if (!cla.package.parcello) {
-			let template = require('../template/parcello.json');
+			let template = require('../templates/parcello.json');
 			cla.package.parcello = template;
 		}
 		
@@ -41,7 +41,7 @@ module.exports = function task_bootstrap(cla) {
 		});
 
 		//remove cache
-		delete cla.package.parcello.cache;
+		opath.del(cla.package, 'parcello.cache');
 
 		//write package.json back
 		let destination = path.join(cwd, 'package.json');
@@ -52,6 +52,5 @@ module.exports = function task_bootstrap(cla) {
 				return;
 			}
 		});
-
 	});	
 }
