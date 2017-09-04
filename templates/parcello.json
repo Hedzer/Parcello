@@ -1,0 +1,30 @@
+{
+	"default": {
+		"aliases": {},
+		"extensions": [
+			"js"
+		],
+		"namespace": "",
+		"source": {
+			"file": "",
+			"folder": ""
+		},
+		"build": {
+			"file": "",
+			"folder": ""
+		},
+		"external": {
+			"folder": "",
+			"select": [
+				"js"
+			],
+			"ignore": [],
+			"copy": []
+		},
+		"tests": {
+			"folder": ""
+		},
+		
+	},
+	"dev": {}
+}

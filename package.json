@@ -67,8 +67,17 @@
     ]
   },
   "dependencies": {
+    "chalk": "^2.1.0",
+    "clone": "^2.1.1",
     "commander": "^2.11.0",
     "defaults-deep": "^0.2.3",
-    "expand-tilde": "^2.0.2"
+    "expand-tilde": "^2.0.2",
+    "inquirer": "^3.2.2",
+    "jsonfile": "^3.0.1",
+    "linewrap": "^0.2.1",
+    "object-path": "^0.11.4",
+    "promptly": "^2.2.0",
+    "semver-regex": "^1.0.0",
+    "to-semver": "^1.1.0"
   }
 }

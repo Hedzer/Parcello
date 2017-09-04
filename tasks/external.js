@@ -1,5 +1,5 @@
 'use strict';
-module.exports = function build_external(cla) {
+module.exports = function task_external(cla) {
 	const gulp = require('gulp');
 	const path = require('path');
 	const fs = require('fs');
@@ -35,7 +35,7 @@ module.exports = function build_external(cla) {
 	}
 
 	return gulp.task('external', function(callback) {
-		let dir = process.cwd();
+		let dir = cla.directory;
 		let outside = path.join(dir, '../');
 		let source = path.join(dir, profile.source.folder);
 		let destination = path.join(dir, profile.external.folder);
@@ -44,6 +44,7 @@ module.exports = function build_external(cla) {
 		}
 		let cache = {};
 		getFiles(source, function(err, files) {
+			files = files || [];
 			files.forEach((file) => {
 				let dependency = '/' + file.replace(outside, '');
 				file = file.replace(source, '');

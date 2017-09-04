@@ -1,4 +1,4 @@
-module.exports = function bundle_es6(cla) {
+module.exports = function task_es6(cla) {
 	const path = require('path');
 	const fs = require('fs');
 	const gulp = require('gulp');
@@ -13,7 +13,7 @@ module.exports = function bundle_es6(cla) {
 	const profile = cla.profile;
 
 	return gulp.task('bundle-es6', function(callback) {
-		console.log('Building: ' + profile.built.file);
+		console.log('Building: ' + profile.build.file);
 		return rollup({
 			entry: profile.entry,
 			format: 'iife',
@@ -21,15 +21,15 @@ module.exports = function bundle_es6(cla) {
 			sourceMap: true,
 			plugins: [
 				rollup_alias({
-					Paths: profile.aliases,
+					Paths: profile.cache.aliases,
 					Extensions: profile.extensions,
 				})
 			]
 		})
-		.pipe(source(profile.built.file))
+		.pipe(source(profile.build.file))
 		.pipe(buffer())
 		.pipe(sourcemaps.init({ loadMaps: true }))
 		.pipe(sourcemaps.write('./'))
-		.pipe(gulp.dest(profile.built.folder));
+		.pipe(gulp.dest(path.join(profile.build.folder, profile.cache.version)));
 	});
 }

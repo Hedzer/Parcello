@@ -1,4 +1,4 @@
-function build_minify(cla) {
+module.exports = function task_minify(cla) {
 	const path = require('path');
 	const fs = require('fs');
 	const gulp = require('gulp');
@@ -12,12 +12,12 @@ function build_minify(cla) {
 	const profile = cla.profile;
 
 	return gulp.task('minify', function(callback) {
-		console.log('Minifying: ' + profile.built.file);
-		return gulp.src(profile.built.full)
+		console.log('Minifying: ' + profile.build.file);
+		return gulp.src(profile.build.full)
 		.pipe(sourcemaps.init())
 		.pipe(uglify({
-			inSourceMap: profile.built.fullMap,
-			outSourceMap: profile.built.minMap,
+			inSourceMap: profile.build.fullMap,
+			outSourceMap: profile.build.minMap,
 			mangle: {
 				toplevel: true,
 				screw_ie8: true
@@ -49,6 +49,6 @@ function build_minify(cla) {
 		.pipe(sourcemaps.write('./', {
 			addComment: false
 		}))
-		.pipe(gulp.dest(profile.built.folder));
+		.pipe(gulp.dest(profile.build.folder));
 	});
 }

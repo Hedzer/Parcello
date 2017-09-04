@@ -1,4 +1,4 @@
-module.exports = function dev_build(cla) {
+module.exports = function task_dev(cla) {
 	const gulp = require('gulp');
 	const runSequence = require('run-sequence');
 

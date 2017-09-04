@@ -1,4 +1,4 @@
-module.exports = function default_build(cla) {
+module.exports = function task_default(cla) {
 	const gulp = require('gulp');
 
 	require('./dev')(cla);

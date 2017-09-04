@@ -1,6 +1,9 @@
-const gulp = require('gulp');
+module.exports = function task_watch(cla) {
+	const gulp = require('gulp');
+	require('./default')(cla);
 
-module.exports = gulp.task('watch', function() {
-	console.log('-> Watching Source')
-	gulp.watch('./Source/**/*.js', ['default']);
-});
+	return gulp.task('watch', function() {
+		console.log('-> Watching Source')
+		gulp.watch('./Source/**/*.js', ['default']);
+	});	
+}

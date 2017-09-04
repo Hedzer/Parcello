@@ -1,27 +1,37 @@
 'use strict';
 
-const toSemver = require('to-semver');
 
-module.exports = function get_profile(cwd, profile, cla) {
+module.exports = function build_config(cwd, build, profile, cla) {
 	const fs = require('fs');
 	const path = require('path');
 	const defaults = require('defaults-deep');
+	const toSemver = require('to-semver');
+	const jsonfile = require('jsonfile');
+	const clone = require('clone');
 	const root = cwd;
-	let build = require(path.join(root,'parcello.json'));
+	
+	if (!build) { return false; }
 	let hasTransformed = false;
 
 	let cached;
 
 	if (hasTransformed) { return cached; }
 
-	let config = defaults((build[profile] || {}), build.default);
+	let config = clone(defaults((build[profile] || {}), build.default));
+	config.cache = {
+		aliases: {},
+		version: 'none'
+	};
 
 	//convert aliases to absolute
 	Object.keys(config.aliases || {}).forEach((key) => {
-		config.aliases[key] = path.join(root, config.aliases[key]);
+		config.cache.aliases[key] = path.join(root, config.aliases[key]);
 	});
 
 	let source = path.join(root, config.source.folder);
+	if (!fs.existsSync(source)) {
+		return false;
+	}
 
 	//get version
 	let version = cla.options.version;
@@ -34,6 +44,8 @@ module.exports = function get_profile(cwd, profile, cla) {
 			console.log('No version folders found.');
 		}
 	}
+
+	config.cache.version = version;
 	console.log('Selected version: ' + version);
 
 	let isPolyfilled = !!cla.options.polyfilled;

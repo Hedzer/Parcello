@@ -1,4 +1,4 @@
-module.exports = function bundle() {
+module.exports = function task_bundle(cla) {
 	const path = require('path');
 	const fs = require('fs');
 	const gulp = require('gulp');
@@ -9,21 +9,20 @@ module.exports = function bundle() {
 	const rollup = require('rollup-stream');
 	const rollup_babel = require('rollup-plugin-babel');
 	const rollup_alias = require('rollup-plugin-import-alias');
-	const util = require('gulp-util');
 	const defaults = require('defaults-deep');
 	const profile = cla.profile;
 
 	return gulp.task('bundle', function(callback) {
-		console.log('Building: ' + config.built.file);
+		console.log('Building: ' + profile.build.file);
 		return rollup({
-			entry: config.entry,
+			entry: profile.entry,
 			format: 'iife',
-			moduleName: config.namespace,
+			moduleName: profile.namespace,
 			sourceMap: true,
 			plugins: [
 				rollup_alias({
-					Paths: config.aliases,
-					Extensions: config.extensions,
+					Paths: cla.profile.cache.aliases,
+					Extensions: profile.extensions,
 				}),
 				rollup_babel({
 					presets: [
@@ -42,10 +41,10 @@ module.exports = function bundle() {
 				})
 			]
 		})
-		.pipe(source(config.built.file))
+		.pipe(source(profile.build.file))
 		.pipe(buffer())
 		.pipe(sourcemaps.init({ loadMaps: true }))
 		.pipe(sourcemaps.write('./'))
-		.pipe(gulp.dest(config.built.folder));
+		.pipe(gulp.dest(path.join(profile.build.folder, cla.profile.cache.version)));
 	});
 }
