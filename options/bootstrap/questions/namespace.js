@@ -31,7 +31,6 @@ let question = {
 
 		if (error(question, answer, errors)) { return false; }
 
-		if (!answer) { console.log('You have chosen no namespace.'); }
 		return true;
 	}
 }
