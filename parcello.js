@@ -4,6 +4,7 @@
 
 const cli = require('commander');
 const expandTilde = require('expand-tilde');
+const here = expandTilde(__dirname);
 const directory = expandTilde('~/Dropbox/Projects/GitHub/parcello-test/');//process.cwd();
 const fs = require('fs')
 const path = require('path');
@@ -72,6 +73,7 @@ jsonfile.readFile(packagePath, (err, config) => {
 		let option = options[name];
 		let cla = {
 			arguments: args,
+			here: here,
 			directory: directory,
 			profile: profile,
 			options: cli,
