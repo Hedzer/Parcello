@@ -44,13 +44,23 @@ module.exports = function task_bootstrap(cla) {
 		opath.del(cla.package, 'parcello.cache');
 
 		//write package.json back
-		let destination = path.join(cwd, 'package.json');
-		jsonfile.writeFile(destination, cla.package, {spaces: 2}, function(err, result) {
+		let packagejson = path.join(cwd, 'package.json');
+		jsonfile.writeFile(packagejson, cla.package, {spaces: 2}, function(err, result) {
 			if (err) {
 				console.log(chalk.bold.red(' ERROR: '));
 				console.log(chalk.bold.red(' Unable to write to package.json'));
 				return;
 			}
 		});
+
+		//copy & rename API
+		let destination = path.join(cwd, answers.source, answers.sourceFile);
+		if (!fs.existsSync(destination)) {	
+			fs.copy('../templates/API.js', destination).catch(() => {
+				console.log(chalk.bold.red(' ERROR: '));
+				console.log(chalk.bold.red(' Unable to copy API template to ' + destination));
+			});
+		}
+
 	});	
 }

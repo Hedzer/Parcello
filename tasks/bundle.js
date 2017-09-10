@@ -44,7 +44,7 @@ module.exports = function task_bundle(cla) {
 		.pipe(source(profile.build.file))
 		.pipe(buffer())
 		.pipe(sourcemaps.init({ loadMaps: true }))
-		.pipe(sourcemaps.write('./'))
+		.pipe(sourcemaps.write(path.join('../', cla.profile.cache.version)))
 		.pipe(gulp.dest(path.join(profile.build.folder, cla.profile.cache.version)));
 	});
 }
