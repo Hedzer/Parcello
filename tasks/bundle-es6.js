@@ -10,6 +10,7 @@ module.exports = function task_es6(cla) {
 	const rollup_babel = require('rollup-plugin-babel');
 	const rollup_alias = require('rollup-plugin-import-alias');
 	const defaults = require('defaults-deep');
+	const aliases = require('./bundle/aliases');
 	const profile = cla.profile;
 
 	return gulp.task('bundle-es6', function(callback) {
@@ -21,7 +22,7 @@ module.exports = function task_es6(cla) {
 			sourceMap: true,
 			plugins: [
 				rollup_alias({
-					Paths: profile.cache.aliases,
+					Paths: aliases(cla.directory, cla.here, profile.cache.aliases),
 					Extensions: profile.extensions,
 				})
 			]
