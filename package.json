@@ -79,6 +79,7 @@
     "object-path": "^0.11.4",
     "promptly": "^2.2.0",
     "semver-regex": "^1.0.0",
+    "simple-git": "^1.77.0",
     "to-semver": "^1.1.0"
   }
 }

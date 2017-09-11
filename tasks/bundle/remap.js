@@ -15,6 +15,12 @@ module.exports = function remap(cwd, here, additional, profile) { //will need to
 	let packages = { '/Parcello': here };
 	let canSearch = opath.get(profile, 'dependency.search.active', true);
 	let useCache = opath.get(profile, 'dependency.search.cache', true);
+	if (opath.has(profile, 'namespace')) {
+		let namespace = opath.get(profile, 'namespace');
+		packages[`/${namespace}`] = cwd;
+	}
+	let cwdName = cwd.match(/([^\/]*)\/*$/)[1];
+	packages[`/${cwdName}`] = cwd;
 
 	//aggregate folders we're going to search through
 	let defaultFolder = opath.get(profile, 'dependency.folder', 'dependencies');
