@@ -22,7 +22,7 @@ module.exports = function task_es6(cla) {
 			sourceMap: true,
 			plugins: [
 				rollup_alias({
-					Paths: remaps(cla.directory, cla.here, profile.cache.maps),
+					Paths: remaps(cla.directory, cla.here, profile.cache.maps, profile),
 					Extensions: profile.extensions,
 				})
 			]

@@ -6,6 +6,8 @@
 			"folder": ""
 		},
 		"dependency": {
+			"folder": "dependencies",
+			"repos": {},
 			"remap": {},
 			"search": {
 				"active": true,
