@@ -41,7 +41,6 @@ module.exports = function remap(cwd, here, additional, profile) { //will need to
 	}
 
 	//search through folder for dependencies
-
 	let mtimes = [];
 	let folders = [];
 	searchFolders.forEach((searchFolder) => {
