@@ -1,17 +1,19 @@
 {
 	"default": {
 		"aliases": {},
-		"extensions": [
-			"js"
-		],
-		"namespace": "",
-		"source": {
-			"file": "",
-			"folder": ""
-		},
 		"build": {
 			"file": "",
 			"folder": ""
+		},
+		"dependency": {
+			"remap": {},
+			"search": {
+				"active": true,
+				"cache": true,
+				"folders": [
+					"node_modules"
+				]
+			}
 		},
 		"external": {
 			"folder": "",
@@ -20,6 +22,14 @@
 			],
 			"ignore": [],
 			"copy": []
+		},
+		"extensions": [
+			"js"
+		],
+		"namespace": "",
+		"source": {
+			"file": "",
+			"folder": ""
 		},
 		"tests": {
 			"folder": ""

@@ -8,6 +8,7 @@ module.exports = function build_config(cwd, build, profile, cla) {
 	const toSemver = require('to-semver');
 	const jsonfile = require('jsonfile');
 	const clone = require('clone');
+	const opath = require('object-path');
 	const root = cwd;
 	
 	if (!build) { return false; }
@@ -19,14 +20,16 @@ module.exports = function build_config(cwd, build, profile, cla) {
 
 	let config = clone(defaults((build[profile] || {}), build.default));
 	config.cache = {
-		aliases: {},
+		maps: {},
 		version: 'none'
 	};
 
-	//convert aliases to absolute
-	Object.keys(config.aliases || {}).forEach((key) => {
-		config.cache.aliases[key] = path.join(root, config.aliases[key]);
-	});
+	//convert maps to absolute
+	if (opath.has(config, 'dependency.remap')) {
+		Object.keys(opath.get(config, 'dependency.remap', {})).forEach((key) => {
+			config.cache.maps[key] = path.join(root, config.dependency.remap[key]);
+		});
+	}
 
 	let source = path.join(root, config.source.folder);
 	if (!fs.existsSync(source)) {

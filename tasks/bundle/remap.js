@@ -8,7 +8,7 @@ const defaults = require('defaults-deep');
 const crc = require('crc');
 
 //this function is too big/messy, and will need to be pulled apart later
-module.exports = function aliases(cwd, here, additional) { //will need to do a non-sync version later, maybe cache?
+module.exports = function remap(cwd, here, additional) { //will need to do a non-sync version later, maybe cache?
 	if (typeof additional !== 'object' || additional === null) { additional = {}; }
 	let packages = { '/Parcello': here };
 
@@ -18,7 +18,7 @@ module.exports = function aliases(cwd, here, additional) { //will need to do a n
 	let cacheFile = path.join(cachePath, `${cacheId}.json`);
 	let cacheContents = {
 		modified: false,
-		aliases: {},
+		maps: {},
 	};
 
 	let cacheModified = false;
@@ -49,17 +49,17 @@ module.exports = function aliases(cwd, here, additional) { //will need to do a n
 		return isDirectory;
 	});
 
-	//verify cache. hash the additional aliases + mtime of packages
+	//verify cache. hash the additional maps + mtime of packages
 	let aliasChecksum = crc.crc32(crc.crc32(Object.keys(additional).sort().reduce((result, current) => {
 		result.push([current, additional[current]].join());
 		return result;
 	}, []).join()).toString(16) + crc.crc32(combinedMTime.join()).toString(16) + crc.crc32(here)).toString(16);
 	if (aliasChecksum === cacheModified) {
-		return cacheContents.aliases;
+		return cacheContents.maps;
 	}
 
 
-	//get new aliases
+	//get new maps
 	folders.forEach((folder) => {
 		let folderPath = path.join(cwd, 'node_modules', folder);
 		let packagePath = path.join(folderPath, 'package.json');
@@ -74,14 +74,14 @@ module.exports = function aliases(cwd, here, additional) { //will need to do a n
 			packages[`/${namespace}`] = folderPath;
 		}
 	});
-	let aliases = defaults(packages, additional);
+	let maps = defaults(packages, additional);
 
 	//write to cache
 	cacheContents = {
 		modified: aliasChecksum,
-		aliases: aliases,
+		maps: maps,
 	};
 	jsonfile.writeFile(cacheFile, cacheContents, { spaces: 2 }, () => {});
-	
-	return aliases;
+
+	return maps;
 }
