@@ -68,8 +68,9 @@ module.exports = function remap(cwd, here, additional, profile) { //will need to
 	});
 
 	//verify cache. hash the additional maps + mtime of packages
+	let checksum;
 	if (useCache) {
-		let checksum = crc.crc32(crc.crc32(Object.keys(additional).sort().reduce((result, current) => {
+		checksum = crc.crc32(crc.crc32(Object.keys(additional).sort().reduce((result, current) => {
 			result.push([current, additional[current]].join());
 			return result;
 		}, []).join()).toString(16) + crc.crc32(mtimes.join()).toString(16) + crc.crc32(here)).toString(16);
