@@ -70,10 +70,14 @@ module.exports = function remap(cwd, here, additional, profile) { //will need to
 	//verify cache. hash the additional maps + mtime of packages
 	let checksum;
 	if (useCache) {
-		checksum = crc.crc32(crc.crc32(Object.keys(additional).sort().reduce((result, current) => {
+		let cProfile = crc.crc32(JSON.stringify(profile)).toString(16);
+		let cAdditonal = crc.crc32(Object.keys(additional).sort().reduce((result, current) => {
 			result.push([current, additional[current]].join());
 			return result;
-		}, []).join()).toString(16) + crc.crc32(mtimes.join()).toString(16) + crc.crc32(here)).toString(16);
+		}, []).join()).toString(16);
+		let cTimes = crc.crc32(mtimes.join()).toString(16);
+		let cHere = crc.crc32(here).toString(16);
+		checksum = crc.crc32(cProfile + cAdditonal + cTimes + cHere).toString(16);
 		
 		if (checksum === modified) {
 			return cache.maps;
@@ -86,14 +90,28 @@ module.exports = function remap(cwd, here, additional, profile) { //will need to
 		let folderPath = path.join(cwd, folder.path, folder.name);
 		let packagePath = path.join(folderPath, 'package.json');
 		if (fs.existsSync(packagePath)) {
-			packages[`/${folder.name}`] = folderPath;
+			
 			let obj = jsonfile.readFileSync(packagePath);
-			if (!opath.has(obj, 'parcello.namespace')) { return; }
+			if (opath.has(obj, 'parcello.default.namespace')) {
+				let namespace = opath.get(obj, 'parcello.default.namespace');
+				let isExternal = opath.get(profile, `dependency.external.${namespace}`, false);
+				let externalFolder = opath.get(obj, 'parcello.default.external.folder');
+				let sourceFolder = opath.get(obj, 'parcello.default.source.folder');
+				if (!namespace) { return; }
 
-			let namespace = opath.get(obj, 'parcello.namespace');
-			if (!namespace) { return; }
+				let externalPath = path.join(folderPath, externalFolder);
+				if (isExternal) {
+					packages[`/${namespace}/${sourceFolder}`] = externalPath;
+					packages[`/${folder.name}/${sourceFolder}`] = externalPath;
+					return;
+				}
+				packages[`/${namespace}`] = folderPath;
+				packages[`/${folder.name}`] = folderPath;
+				return;
+			}
 
-			packages[`/${namespace}`] = folderPath;
+			packages[`/${folder.name}`] = folderPath;
+
 		}
 	});
 

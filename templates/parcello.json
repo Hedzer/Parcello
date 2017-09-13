@@ -15,7 +15,8 @@
 				"folders": [
 					"node_modules"
 				]
-			}
+			},
+			"external": {}
 		},
 		"external": {
 			"folder": "",
