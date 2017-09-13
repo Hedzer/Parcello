@@ -9,7 +9,7 @@ module.exports = function task_default(cla) {
 		if (cla.options['external-only']) {
 			return gulp.start('external');
 		}
-		if (cla.options.production) {
+		if (cla.options.prod) {
 			return gulp.start('production');
 		}
 		return gulp.start('dev');

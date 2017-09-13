@@ -4,7 +4,7 @@ const gulp = require('gulp');
 const option = {
 	isCommand: true,
 	isDefault: false,
-	name: "production",
+	name: "prod",
 	args: false,
 	description: "builds the project, minifies, and produces external dependency links",
 	parser: (a) => { return a; },
