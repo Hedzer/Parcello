@@ -27,6 +27,14 @@ module.exports = function task_bootstrap(cla) {
 			}
 		});
 
+		//create dependency folder
+		(() => {
+			let dir = path.join(cwd, answers.dependency);
+			if (!fs.existsSync(dir)){
+				fs.ensureDirSync(dir);
+			}
+		})();
+
 		//if package.json->parcello doesn't exist, create it
 		if (!cla.package.parcello) {
 			let template = require('../templates/parcello.json');

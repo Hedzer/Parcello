@@ -9,6 +9,7 @@ const namespace = require('./bootstrap/questions/namespace');
 const source = require('./bootstrap/questions/source');
 const version = require('./bootstrap/questions/version');
 const sourceFile = require('./bootstrap/questions/sourceFile');
+const dependency = require('./bootstrap/questions/dependency');
 const build = require('./bootstrap/questions/build');
 const output = require('./bootstrap/questions/output');
 const external = require('./bootstrap/questions/external');
@@ -30,6 +31,7 @@ const option = {
 			source,
 			version,
 			sourceFile,
+			dependency,
 			build,
 			output,
 			external,
