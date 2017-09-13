@@ -127,7 +127,7 @@ jsonfile.readFile(packagePath, (err, config) => {
 		let s = (ecount > 1 ? 's' : '');
 		let ns = (ecount > 1 ? '' : 's');
 		console.log(chalk.bold.red(' ERROR: '));
-		console.log(chalk.bold.red(' ' + errors.join(', ') + ` command${s} require${ns} that the current working directory be bootstrapped.`));
+		console.log(chalk.bold.red(' ' + errors.join(', ') + ` command${s} require${ns} that the current working directory be initialized.`));
 	}
 
 });
