@@ -1,25 +1,25 @@
 'use strict';
 const gulp = require('gulp');
 const inquirer = require('inquirer');
-const answers = require('./bootstrap/answers');
+const answers = require('./init/answers');
 const chalk = require('chalk');
 
 //questions
-const namespace = require('./bootstrap/questions/namespace');
-const source = require('./bootstrap/questions/source');
-const version = require('./bootstrap/questions/version');
-const sourceFile = require('./bootstrap/questions/sourceFile');
-const dependency = require('./bootstrap/questions/dependency');
-const build = require('./bootstrap/questions/build');
-const output = require('./bootstrap/questions/output');
-const external = require('./bootstrap/questions/external');
-const documentation = require('./bootstrap/questions/documentation');
-const test = require('./bootstrap/questions/test');
+const namespace = require('./init/questions/namespace');
+const source = require('./init/questions/source');
+const version = require('./init/questions/version');
+const sourceFile = require('./init/questions/sourceFile');
+const dependency = require('./init/questions/dependency');
+const build = require('./init/questions/build');
+const output = require('./init/questions/output');
+const external = require('./init/questions/external');
+const documentation = require('./init/questions/documentation');
+const test = require('./init/questions/test');
 
 const option = {
 	isCommand: true,
 	isDefault: false,
-	name: "bootstrap",
+	name: "init",
 	args: false,
 	description: "sets up a new parcello project",
 	parser: (a) => { return a; },
@@ -49,8 +49,8 @@ const option = {
 		console.log(chalk.bold.yellow('\n  You may get help regarding any question by typing --? in the prompt\n'));
 		inquirer.prompt(questions).then(function (answers) {
 		    cla.answers = answers;
-			const task = require('../tasks/bootstrap')(cla);
-			gulp.start('bootstrap');
+			const task = require('../tasks/init')(cla);
+			gulp.start('init');
 		});
 
 

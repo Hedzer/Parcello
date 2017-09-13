@@ -1,13 +1,13 @@
 'use strict';
 
-module.exports = function task_bootstrap(cla) {
+module.exports = function task_init(cla) {
 	const gulp = require('gulp');
 	const fs = require('fs-extra');
 	const path = require('path');
 	const opath = require('object-path');
 	const jsonfile = require('jsonfile');
 
-	return gulp.task('bootstrap', function() {
+	return gulp.task('init', function() {
 		let answers = cla.answers;
 		let cwd = cla.directory;
 
