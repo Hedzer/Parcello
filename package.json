@@ -1,13 +1,11 @@
 {
   "name": "Parcello",
-  "version": "1.0.0",
-  "description": "",
+  "version": "0.1.0",
+  "keywords": ["cli", "build", "es6", "es2015", "gulp", "babel", "rollup"],
+  "description": "Parcello is a build tool for ES6 projects. It uses gulp, babel, rollup and some custom plugins to build code and manage dependencies.",
   "main": "parcello.js",
   "bin": {
     "parcello": "./parcello.js"
-  },
-  "directories": {
-    "example": "examples"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -27,7 +25,21 @@
     "url": "https://github.com/Hedzer/Parcello/issues"
   },
   "homepage": "https://github.com/Hedzer/Parcello#readme",
-  "devDependencies": {
+  "devDependencies": {},
+  "babel": {
+    "presets": [
+      [
+        "es2015",
+        {
+          "modules": false
+        }
+      ]
+    ],
+    "plugins": [
+      "external-helpers"
+    ]
+  },
+  "dependencies": {
     "babel-plugin-syntax-trailing-function-commas": "^6.22.0",
     "babel-plugin-transform-class-properties": "^6.19.0",
     "babel-plugin-transform-runtime": "^6.15.0",
@@ -51,22 +63,7 @@
     "rollup-stream": "^1.11.0",
     "run-sequence": "^1.2.2",
     "vinyl-buffer": "^1.0.0",
-    "vinyl-source-stream": "^1.1.0"
-  },
-  "babel": {
-    "presets": [
-      [
-        "es2015",
-        {
-          "modules": false
-        }
-      ]
-    ],
-    "plugins": [
-      "external-helpers"
-    ]
-  },
-  "dependencies": {
+    "vinyl-source-stream": "^1.1.0",
     "chalk": "^2.1.0",
     "clone": "^2.1.1",
     "commander": "^2.11.0",
