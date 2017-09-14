@@ -1,11 +1,20 @@
 {
 	"default": {
+		"namespace": "",
+		"extensions": [
+			"js"
+		],
+		"source": {
+			"file": "",
+			"folder": "",
+			"externalize": true
+		},
 		"build": {
 			"file": "",
 			"folder": ""
 		},
 		"dependency": {
-			"folder": "dependencies",
+			"folder": "",
 			"repos": {},
 			"remap": {},
 			"search": {
@@ -19,21 +28,13 @@
 		},
 		"external": {
 			"folder": "",
-			"select": [
-				"js"
-			],
 			"ignore": [],
 			"copy": []
 		},
-		"extensions": [
-			"js"
-		],
-		"namespace": "",
-		"source": {
-			"file": "",
+		"tests": {
 			"folder": ""
 		},
-		"tests": {
+		"documentation": {
 			"folder": ""
 		}
 	},
