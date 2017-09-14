@@ -1,5 +1,5 @@
 {
-  "name": "Parcello",
+  "name": "parcello",
   "version": "0.1.0",
   "keywords": ["cli", "build", "es6", "es2015", "gulp", "babel", "rollup"],
   "description": "Parcello is a build tool for ES6 projects. It uses gulp, babel, rollup and some custom plugins to build code and manage dependencies.",
@@ -14,11 +14,6 @@
     "type": "git",
     "url": "git+https://github.com/Hedzer/Parcello.git"
   },
-  "keywords": [
-    "project",
-    "management",
-    "es6"
-  ],
   "author": "Hedzer Ferwerda",
   "license": "ISC",
   "bugs": {
