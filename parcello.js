@@ -5,7 +5,7 @@
 const cli = require('commander');
 const expandTilde = require('expand-tilde');
 const here = expandTilde(__dirname);
-const directory = expandTilde('~/Dropbox/Projects/GitHub/parcello-test/');//process.cwd();
+const directory = expandTilde(process.cwd());
 const fs = require('fs')
 const path = require('path');
 const getProfile = require('./profile');
@@ -25,7 +25,7 @@ jsonfile.readFile(packagePath, (err, config) => {
 	}
 
 	//read options
-	let files = fs.readdirSync('./options');
+	let files = fs.readdirSync(__dirname + '/options');
 	let options = {};
 
 	//sort by commands first, then alpha
@@ -41,7 +41,7 @@ jsonfile.readFile(packagePath, (err, config) => {
 	});
 
 	//select files, not folders
-	files = files.filter(file => fs.statSync(`./options/${file}`).isFile());
+	files = files.filter(file => fs.statSync(__dirname + `/options/${file}`).isFile());
 
 	//add coptions to menu
 	files.forEach((file) => {
