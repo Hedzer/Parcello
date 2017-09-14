@@ -1,6 +1,6 @@
 {
   "name": "parcello",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "keywords": ["cli", "build", "es6", "es2015", "gulp", "babel", "rollup"],
   "description": "Parcello is a build tool for ES6 projects. It uses gulp, babel, rollup and some custom plugins to build code and manage dependencies.",
   "main": "parcello.js",
@@ -16,6 +16,7 @@
   },
   "author": "Hedzer Ferwerda",
   "email": "hedzer87@gmail.com",
+  "readmeFilename": "README.md",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Hedzer/Parcello/issues"
