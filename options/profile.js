@@ -3,10 +3,10 @@
 const option = {
 	isCommand: false,
 	isDefault: false,
-	name: "polyfill",
+	name: "profile",
 	args: false,
 	shorthand: "p",
-	description: "includes polyfills",
+	description: "sets the build profile",
 	parser: (a) => { return a; },
 	default: [],
 	initiatory: false,
