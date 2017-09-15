@@ -16,10 +16,10 @@ module.exports = function task_es6(cla) {
 	return gulp.task('bundle-es6', function(callback) {
 		console.log('Building: ' + profile.build.file);
 		return rollup({
-			entry: profile.entry,
+			input: profile.entry,
 			format: 'iife',
-			moduleName: profile.namespace,
-			sourceMap: true,
+			name: profile.namespace,
+			sourcemap: true,
 			plugins: [
 				rollup_alias({
 					Paths: remaps(cla.directory, cla.here, profile.cache.maps, profile),
