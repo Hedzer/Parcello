@@ -26,7 +26,7 @@ let question = {
 	},
 	default: 'Source',
 	help: 'The name of the source folder that houses the different versions of your source code.',
-	setting: 'parcello.default.source.folder',
+	setting: 'parcello.folders.source',
 	validate: (answer) => {
 		let errors = [];
 		if (help(question, answer)) { return false; }

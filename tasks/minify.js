@@ -9,7 +9,9 @@ module.exports = function task_minify(cla) {
 	const rename = require('gulp-rename');
 	const dereserve = require('gulp-dereserve');
 	const defaults = require('defaults-deep');
+	const settings = cla.settings;
 	const profile = cla.profile;
+	const config = cla.settings.config;
 
 	return gulp.task('minify', function(callback) {
 		console.log('Minifying: ' + profile.build.file);
@@ -47,8 +49,8 @@ module.exports = function task_minify(cla) {
 			}
 		}))
 		.pipe(sourcemaps.write('./', {
-			addComment: false
+			addComment: true
 		}))
-		.pipe(gulp.dest(profile.build.folder));
+		.pipe(gulp.dest(path.join(config.folders.build, settings.cache.version)));
 	});
 }

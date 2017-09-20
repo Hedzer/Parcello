@@ -22,7 +22,7 @@ let question = {
 		};
 	},
 	help: 'The file name for the project\'s build output.',
-	setting: 'parcello.default.build.file',
+	setting: 'parcello.profiles.default.build.file',
 	validate: (answer) => {
 		let errors = [];
 		if (help(question, answer)) { return false; }

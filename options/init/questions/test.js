@@ -26,7 +26,7 @@ let question = {
 	},
 	default: 'Tests',
 	help: 'The name of the folder that houses your project\'s tests.',
-	setting: 'parcello.default.tests.folder',
+	setting: 'parcello.folders.tests',
 	validate: (answer) => {
 		let errors = [];
 		if (help(question, answer)) { return false; }

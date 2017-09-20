@@ -1,7 +1,7 @@
 'use strict';
 
 
-module.exports = function build_config(cwd, build, profile, cla) {
+module.exports = function build_config(cwd, config, profileName, cla) {
 	const fs = require('fs');
 	const path = require('path');
 	const defaults = require('defaults-deep');
@@ -9,68 +9,71 @@ module.exports = function build_config(cwd, build, profile, cla) {
 	const jsonfile = require('jsonfile');
 	const clone = require('clone');
 	const opath = require('object-path');
+	const semversioned = require('./profile/semversioned');
+	const chalk = require('chalk');
 	const root = cwd;
 	
-	if (!build) { return false; }
-	let hasTransformed = false;
+	if (!config) { return false; }
 
-	let cached;
-
-	if (hasTransformed) { return cached; }
-
-	let config = clone(defaults((build[profile] || {}), build.default));
-	config.cache = {
-		maps: {},
-		version: 'none'
-	};
-
-	//convert maps to absolute
-	if (opath.has(config, 'dependency.remap')) {
-		Object.keys(opath.get(config, 'dependency.remap', {})).forEach((key) => {
-			config.cache.maps[key] = path.join(root, config.dependency.remap[key]);
-		});
-	}
-
-	let source = path.join(root, config.source.folder);
+	let source = path.join(root, config.folders.source);
 	if (!fs.existsSync(source)) {
-		return false;
+		console.log(chalk.bold.red('Source folder does not exist.'));
+		return Error;
 	}
+
 
 	//get version
-	let version = cla.options.version;
-	let numbers = /\d+/g;
+	let version = cla.version; //add default build version
+	if (Array.isArray(version)) { version = false; }
 	if (!version && version !== 0) {
 		let folders = fs.readdirSync(source).filter(dir => fs.statSync(path.join(source, dir)).isDirectory());
 		if (folders.length) {
 			version = toSemver(folders, { includePrereleases: true, clean: false })[0];
 		} else {
-			console.log('No version folders found.');
+			console.log(chalk.bold.red('No version folders found.'));
+			return Error;
 		}
 	}
 
-	config.cache.version = version;
-	console.log('Selected version: ' + version);
+	let versionPath = path.join(source, version);
+	if (!fs.existsSync(versionPath)) {
+		console.log(chalk.bold.red(`Version '${version}' does not exist.`));
+		return Error;
+	}
 
-	let isPolyfilled = !!cla.options.polyfilled;
+	let versioned = semversioned(config, profileName, version);
+	console.log('Selected source version: ' + version);
+	console.log('Selected build profile: ' + versioned.using);
 
-	config.entry = path.join(source, version, isPolyfilled ? config.source.polyfilled : config.source.file);
-	config.build = (config.build || {});
-	config.build.folder = path.join(root, config.build.folder);
+	let settings = versioned;
+	let profile = opath.get(settings, 'profile', {});
+	settings.cache = {
+		maps: {},
+		version: version || 'none'
+	};
 
-	//generte full path
-	let full = path.join(config.build.folder, config.build.file);
-	config.build.full = full;
-	config.build.fullMap = full + '.map';
+	//convert maps to absolute
+	if (opath.has(profile, 'dependency.remap')) {
+		let remap = opath.get(profile, 'dependency.remap', {});
+		Object.keys(remap).forEach((key) => {
+			settings.cache.maps[key] = path.join(root, remap[key]);
+		});
+	}
+
+	profile.entry = path.join(cwd, config.folders.source, version, profile.source.file); //needs fallback later
+	opath.set(profile, 'build.folder', path.join(root, config.folders.build));
+
+	//generate full path
+	let full = path.join(cwd, config.folders.build, version, profile.build.file);
+	opath.set(profile, 'build.full', full);
+	opath.set(profile, 'build.fullMap', full + '.map');
 
 	//generate minned path
 	let builtExt = path.extname(full);
 	let min = full.substring(0, full.length - builtExt.length) + '.min' + builtExt;
-	config.build.min = min;
-	config.build.minMap = min + '.map';
+	opath.set(profile, 'build.min', min);
+	opath.set(profile, 'build.minMap', min + '.map');
 
-	hasTransformed = true;
-	cached = config;
-
-	return config;
+	return settings;
 }
 

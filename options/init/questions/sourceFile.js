@@ -15,7 +15,7 @@ let question = {
 	},
 	default: 'API.js',
 	help: 'The file name for the API code inhabiting the namespace. Usually contains an Object or Class with properties and methods that will be exposed.',
-	setting: 'parcello.default.source.file',
+	setting: 'parcello.profiles.default.source.file',
 	validate: (answer) => {
 		let errors = [];
 		if (help(question, answer)) { return false; }

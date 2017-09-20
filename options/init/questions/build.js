@@ -19,7 +19,7 @@ let question = {
 	},
 	default: 'build',
 	help: 'The name of the build folder where build, minified, and polyfilled outputs are sent.',
-	setting: 'parcello.default.build.folder',
+	setting: 'parcello.folders.build',
 	validate: (answer) => {
 		let errors = [];
 		if (help(question, answer)) { return false; }

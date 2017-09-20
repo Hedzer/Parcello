@@ -80,6 +80,7 @@
     "rollup-stream": "^1.11.0",
     "run-sequence": "^1.2.2",
     "semver-regex": "^1.0.0",
+    "semverbs": "^1.0.2",
     "simple-git": "^1.77.0",
     "to-semver": "^1.1.0",
     "vinyl-buffer": "^1.0.0",

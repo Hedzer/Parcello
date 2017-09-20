@@ -26,7 +26,7 @@ let question = {
 	},
 	default: 'Dependencies',
 	help: 'The name of the dependency folder where dependencies other than node_modules will be stored. Repositories will be downloaded to this directory automatically. "import X from Y" statements will automatically link to content in this folder, as well as node_modules.',
-	setting: 'parcello.default.dependency.folder',
+	setting: 'parcello.folders.dependency',
 	validate: (answer) => {
 		let errors = [];
 		if (help(question, answer)) { return false; }

@@ -6,6 +6,7 @@ module.exports = function task_external(cla) {
 	const getFiles = require('recursive-readdir');
 	const fsExtra = require('fs-extra');
 	const profile = cla.profile;
+	const config = cla.settings.config;
 
 	let lists = {};
 	['ignore', 'copy'].forEach((key) => {
@@ -36,9 +37,9 @@ module.exports = function task_external(cla) {
 
 	return gulp.task('external', function(callback) {
 		let dir = cla.directory;
-		let outside = path.join(dir, '../');
-		let source = path.join(dir, profile.source.folder);
-		let destination = path.join(dir, profile.external.folder);
+		let outside = path.join(dir, './');
+		let source = path.join(dir, config.folders.source);
+		let destination = path.join(dir, config.folders.external);
 		if (destination !== dir) {
 			fsExtra.emptydirSync(destination);
 		}
@@ -46,7 +47,7 @@ module.exports = function task_external(cla) {
 		getFiles(source, function(err, files) {
 			files = files || [];
 			files.forEach((file) => {
-				let dependency = '/' + file.replace(outside, '');
+				let dependency = `/${config.namespace}/` + file.replace(outside, '');
 				file = file.replace(source, '');
 				let sourceFile = path.join(source, file);
 				let destFile = path.join(destination, file);
@@ -60,7 +61,11 @@ module.exports = function task_external(cla) {
 					fsExtra.copySync(sourceFile, destFile);
 					return;
 				}
-				fs.writeFile(destFile, externalize(dependency));
+				fs.writeFile(destFile, externalize(dependency), (err, data) => {
+					if (err) {
+						console.log(err);
+					}
+				});
 			});
 		});
 	});

@@ -11,18 +11,20 @@ module.exports = function task_bundle(cla) {
 	const rollup_alias = require('rollup-plugin-import-alias');
 	const defaults = require('defaults-deep');
 	const remaps = require('./bundle/remap');
+	const settings = cla.settings;
 	const profile = cla.profile;
+	const config = cla.settings.config;
 
 	return gulp.task('bundle', function(callback) {
 		console.log('Building: ' + profile.build.file);
 		return rollup({
 			input: profile.entry,
 			format: 'iife',
-			name: profile.namespace,
+			name: config.namespace,
 			sourcemap: true,
 			plugins: [
 				rollup_alias({
-					Paths: remaps(cla.directory, cla.here, profile.cache.maps, profile),
+					Paths: remaps(cla.directory, cla.here, settings.cache.maps, settings),
 					Extensions: profile.extensions,
 				}),
 				rollup_babel({
@@ -45,7 +47,7 @@ module.exports = function task_bundle(cla) {
 		.pipe(source(profile.build.file))
 		.pipe(buffer())
 		.pipe(sourcemaps.init({ loadMaps: true }))
-		.pipe(sourcemaps.write(path.join('../', cla.profile.cache.version)))
-		.pipe(gulp.dest(path.join(profile.build.folder, cla.profile.cache.version)));
+		.pipe(sourcemaps.write(path.join('../', settings.cache.version)))
+		.pipe(gulp.dest(path.join(config.folders.build, settings.cache.version)));
 	});
 }

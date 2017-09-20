@@ -1,42 +1,43 @@
 {
-	"default": {
-		"namespace": "",
-		"extensions": [
-			"js"
-		],
-		"source": {
-			"file": "",
-			"folder": "",
-			"externalize": true
-		},
-		"build": {
-			"file": "",
-			"folder": ""
-		},
-		"dependency": {
-			"folder": "",
-			"repos": {},
-			"remap": {},
-			"search": {
-				"active": true,
-				"cache": true,
-				"folders": [
-					"node_modules"
-				]
-			},
-			"external": {}
-		},
-		"external": {
-			"folder": "",
-			"ignore": [],
-			"copy": []
-		},
-		"tests": {
-			"folder": ""
-		},
-		"documentation": {
-			"folder": ""
-		}
+	"namespace": "",
+	"folders": {
+		"source": "",
+		"build": "",
+		"dependency": "",
+		"external": "",
+		"tests": "",
+		"documentation": ""
 	},
-	"dev": {}
+	"profiles": {
+		"default": {
+			"extensions": [
+				"js"
+			],
+			"source": {
+				"file": "",
+				"auto-externalize": true
+			},
+			"build": {
+				"file": ""
+			},
+			"dependency": {
+				"repos": {},
+				"remap": {},
+				"search": {
+					"active": true,
+					"cache": true,
+					"folders": [
+						"node_modules"
+					]
+				},
+				"external": {}
+			},
+			"external": {
+				"ignore": [],
+				"copy": []
+			},
+			"tests": {},
+			"documentation": {}
+		}
+	}
 }

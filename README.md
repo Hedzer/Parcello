@@ -51,11 +51,27 @@ Configuration is mostly handled with the `parcello init` command and questions. 
 
 ```js
 {
+    // the namespace for the project. 
+    // used for dependencies and API exposure.
+    "namespace": "Example",
     // name of the profile
+	"folders": {
+		// folder housing all source
+		"source": "source",
+		// the name of the output folder for a build
+		//actual output will be inside /build/version
+		"build": "build",
+	    // any dependency not within node_modules
+	    // the folder where repos will be cloned into
+		"dependency": "dependencies",
+		// name of the output folder for external dependency links
+		"external": "external",
+		// folder housing all tests
+		"tests": "tests",
+		// folder housing all documentation
+		"documentation": "documentation"
+	},
 	"default": {  
-	    // the namespace for the project. 
-	    // used for dependencies and API exposure.
-	    "namespace": "Example",
 		// extensions to search for during the build process
 		"extensions": [
 			"js"
@@ -64,25 +80,17 @@ Configuration is mostly handled with the `parcello init` command and questions. 
 		"source": {
 		    // API/entry file that deep links to the rest of the source
 			"file": "",
-			// folder housing all source
-			"folder": "",
 			// append external dependency link code
-			"externalize": true
+			"auto-externalize": true
 		},
 	    // build settings
 		"build": {
 		    // the name of the output file for a build
 		    // maps will be example.js.map, min will be example.min.js
-			"file": "example.js",
-			// the name of the output folder for a build
-			//actual output will be inside /build/version
-			"folder": "build" 
+			"file": "example.js"
 		},
 		//dependency settings
 		"dependency": {
-		    // any dependency not within node_modules
-		    // the folder where repos will be cloned into
-			"folder": "dependencies",
 			// repos that will be cloned on install
 			"repos": {
 			   //folder name where remote will be cloned to
@@ -124,22 +132,15 @@ Configuration is mostly handled with the `parcello init` command and questions. 
 		},
 		// external dependency link settings
 		"external": {
-		    // name of the output folder for external dependency links
-			"folder": "external",
 			// files to ignore when creating external dependency links
 			"ignore": [],
 			// files to copy instead of link
 			"copy": []
 		},
 		// test settings
-		"tests": {
-		    // folder housing all tests
-			"folder": "tests"
-		},
+		"tests": {},
 		// documentation settings
-		"documentation": {
-			"folder": "documentation"
-		}
+		"documentation": {}
 	},
 	// profile to use for version 1.0.1, inherits default
 	"1.0.1": {},

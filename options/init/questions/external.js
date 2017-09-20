@@ -26,7 +26,7 @@ let question = {
 	},
 	default: 'External',
 	help: 'The name of the external folder where all dependency links are housed. External dependency links are used when one project depends on another project, but doesn\'t want to include the source in it\'s own final build.  External dependency links allow you to produce a build that has only your project\'s files bundled into the final output. External dependency links can also be selectively rolled into a build.',
-	setting: 'parcello.default.external.folder',
+	setting: 'parcello.folders.external',
 	validate: (answer) => {
 		let errors = [];
 		if (help(question, answer)) { return false; }

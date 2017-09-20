@@ -4,7 +4,7 @@ const option = {
 	isCommand: false,
 	isDefault: false,
 	name: "profile",
-	args: false,
+	args: "<name>",
 	shorthand: "p",
 	description: "sets the build profile",
 	parser: (a) => { return a; },

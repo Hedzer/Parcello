@@ -10,7 +10,7 @@ let question = {
 	name: 'namespace',
 	message: 'Project namespace: ',
 	help: 'Every project needs a root namespace, a way to interact with it\'s API. For example, if you chose "Earth" as a namespace, and have a method exposed called "spins", your syntax to call "spins" would be Earth.spins()',
-	setting: 'parcello.default.namespace',
+	setting: 'parcello.namespace',
 	setup: (cla, question, answers) => {
 		let pkg = cla.package;
 		if (opath.has(pkg, question.setting)) {

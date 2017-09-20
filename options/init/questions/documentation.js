@@ -26,7 +26,7 @@ let question = {
 	},
 	default: 'Documentation',
 	help: 'The name of the documentation folder where all test driven documentation is stored. Test driven documentation defines a specification in a way that can be tested to assure that documentation does not stray from functionality.',
-	setting: 'parcello.default.documentation.folder',
+	setting: 'parcello.folders.documentation',
 	validate: (answer) => {
 		let errors = [];
 		if (help(question, answer)) { return false; }

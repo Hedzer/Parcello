@@ -8,23 +8,23 @@ const defaults = require('defaults-deep');
 const crc = require('crc');
 
 //this function is too big/messy, and will need to be pulled apart later
-module.exports = function remap(cwd, here, additional, profile) { //will need to do a non-sync version later, maybe cache?
+module.exports = function remap(cwd, here, additional, settings) { //will need to do a non-sync version later, maybe cache?
 	if (typeof additional !== 'object' || additional === null) { additional = {}; }
 
-
+	let profile = settings.profile;
 	let packages = { '/Parcello': here };
-	let canSearch = opath.get(profile, 'dependency.search.active', true);
-	let useCache = opath.get(profile, 'dependency.search.cache', true);
-	if (opath.has(profile, 'namespace')) {
-		let namespace = opath.get(profile, 'namespace');
+	let canSearch = opath.get(settings, 'profile.dependency.search.active', true);
+	let useCache = opath.get(settings, 'profile.dependency.search.cache', true);
+	if (opath.has(settings, 'namespace')) {
+		let namespace = opath.get(settings, 'namespace');
 		packages[`/${namespace}`] = cwd;
 	}
 	let cwdName = cwd.match(/([^\/]*)\/*$/)[1];
 	packages[`/${cwdName}`] = cwd;
 
 	//aggregate folders we're going to search through
-	let defaultFolder = opath.get(profile, 'dependency.folder', 'dependencies');
-	let searchableFolders = (canSearch ? opath.get(profile, 'dependency.search.folders', []) : []);
+	let defaultFolder = opath.get(settings, 'config.folders.dependency', 'dependencies');
+	let searchableFolders = (canSearch ? opath.get(settings, 'profile.dependency.search.folders', []) : []);
 	// we reverse them so that when they are added as a map the last ones are actually the highest priority
 	let searchFolders =  ([defaultFolder].concat(searchableFolders)).reverse();
 
@@ -42,8 +42,12 @@ module.exports = function remap(cwd, here, additional, profile) { //will need to
 		fs.ensureDirSync(cachePath);
 	}
 	if (fs.existsSync(cacheFile)) {
-		cache = jsonfile.readFileSync(cacheFile);
-		modified = opath.get(cache, 'modified');
+		try {
+			cache = jsonfile.readFileSync(cacheFile);
+			modified = opath.get(cache, 'modified');
+		} catch(e) {
+			fs.unlinkSync(cacheFile);
+		}
 	}
 
 	//search through folder for dependencies
@@ -70,14 +74,14 @@ module.exports = function remap(cwd, here, additional, profile) { //will need to
 	//verify cache. hash the additional maps + mtime of packages
 	let checksum;
 	if (useCache) {
-		let cProfile = crc.crc32(JSON.stringify(profile)).toString(16);
+		let cSettings = crc.crc32(JSON.stringify(settings)).toString(16);
 		let cAdditonal = crc.crc32(Object.keys(additional).sort().reduce((result, current) => {
 			result.push([current, additional[current]].join());
 			return result;
 		}, []).join()).toString(16);
 		let cTimes = crc.crc32(mtimes.join()).toString(16);
 		let cHere = crc.crc32(here).toString(16);
-		checksum = crc.crc32(cProfile + cAdditonal + cTimes + cHere).toString(16);
+		checksum = crc.crc32(cSettings + cAdditonal + cTimes + cHere).toString(16);
 		
 		if (checksum === modified) {
 			return cache.maps;
@@ -92,11 +96,11 @@ module.exports = function remap(cwd, here, additional, profile) { //will need to
 		if (fs.existsSync(packagePath)) {
 			
 			let obj = jsonfile.readFileSync(packagePath);
-			if (opath.has(obj, 'parcello.default.namespace')) {
-				let namespace = opath.get(obj, 'parcello.default.namespace');
+			if (opath.has(obj, 'parcello.namespace')) {
+				let namespace = opath.get(obj, 'parcello.namespace');
 				let isExternal = opath.get(profile, `dependency.external.${namespace}`, false);
-				let externalFolder = opath.get(obj, 'parcello.default.external.folder');
-				let sourceFolder = opath.get(obj, 'parcello.default.source.folder');
+				let externalFolder = opath.get(settings, 'config.folders.external');
+				let sourceFolder = opath.get(settings, 'config.folders.source');
 				if (!namespace) { return; }
 
 				let externalPath = path.join(folderPath, externalFolder);
