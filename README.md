@@ -203,6 +203,10 @@ without exporting using the `/Parcello/exports` module the external link ceases 
 ##### default command
 Using `parcello` alone in the command line results in the same command as `parcello dev` with the latest version selected. ES6 is transformed to ES5. default profile is selected unless one matching the semantic version exists. 
 
+#### automatic profile selection
+If no profile is selected, a default will be chosen. If there is a profile with the same name as the selected source version, it will be used. If the source version is a semantic version, it will inherit from previous profiles with semantic version names. If these searches fail, `default` will be used.
+e.g. If source version `Raspberry` is chosen, and there exists a profile called `Raspberry`, then that profile will be chosen. If there is no identically named profile, `default` will be chosen.
+
 ##### version selection
 If no version is selected, the latest valid semantic version is the default.
 
@@ -211,7 +215,7 @@ Each semantic version profile inherits from the previous one, and the first one 
 
 ### Incomplete
 ##### auto source externalizing
-Controlled by `profile.source.externalize = true/false`. This setting injects the following into the source. It has not yet been safely implemented.
+Controlled by `profile.source.auto-externalize = true/false`. This setting injects the following into the source. It has not yet been safely implemented.
 ```js 
 import exports from '/Parcello/exports';
 exports(module).as('/Path/of/source');
