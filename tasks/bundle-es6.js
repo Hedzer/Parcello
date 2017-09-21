@@ -19,7 +19,7 @@ module.exports = function task_es6(cla) {
 		console.log('Building: ' + profile.build.file);
 		return rollup({
 			input: profile.entry,
-			format: 'iife',
+			format: 'umd',
 			name: config.namespace,
 			sourcemap: true,
 			plugins: [
