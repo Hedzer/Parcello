@@ -49,7 +49,7 @@ module.exports = function task_minify(cla) {
 			}
 		}))
 		.pipe(sourcemaps.write('./', {
-			addComment: true
+			addComment: false
 		}))
 		.pipe(gulp.dest(path.join(config.folders.build, settings.cache.version)));
 	});

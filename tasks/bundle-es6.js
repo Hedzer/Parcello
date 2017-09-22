@@ -32,7 +32,7 @@ module.exports = function task_es6(cla) {
 		.pipe(source(profile.build.file))
 		.pipe(buffer())
 		.pipe(sourcemaps.init({ loadMaps: true }))
-		.pipe(sourcemaps.write(path.join('../', settings.cache.version)))
+		.pipe(sourcemaps.write('./'))
 		.pipe(gulp.dest(path.join(config.folders.build, settings.cache.version)));
 	});
 }
