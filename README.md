@@ -91,6 +91,21 @@ Configuration is mostly handled with the `parcello init` command and questions. 
 		},
 		//dependency settings
 		"dependency": {
+			// install options for other package managers
+			// if it's a boolean, enables/disables installing
+			// if it's an object, adds parameters:
+			// see https://www.npmjs.com/package/gulp-install
+			"install": {
+				"npm": true,
+				"bower": true,
+				"tsd": true,
+				"typings": true,
+				"composer": true,
+				"pip": true,
+				// not included in gulp-install
+				// works with the repos settings
+				"git": true
+			},
 			// repos that will be cloned on install
 			"repos": {
 			   //folder name where remote will be cloned to

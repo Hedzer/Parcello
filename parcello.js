@@ -63,7 +63,6 @@ jsonfile.readFile(packagePath, (err, config) => {
 
 	cli.parse(process.argv);
 	let settings = getProfile(directory, config.parcello, cli.profile, cli);
-	if (settings === Error) { return; }
 
 	let errors = [];
 	function check(name) {
@@ -82,11 +81,12 @@ jsonfile.readFile(packagePath, (err, config) => {
 			package: config,
 		};
 
-		if (!option.initiatory && !settings) {
+		if (!option.initiatory && !(settings === Error)) {
 			if (name === 'version' && Array.isArray(args) || !option.isCommand) { return; }
 			errors.push(option.name);	
 			return;
 		}
+
 		let result = option.action(cla);
 		if (!result) { return; }
 

@@ -2,7 +2,7 @@
 
 
 module.exports = function build_config(cwd, config, profileName, cla) {
-	const fs = require('fs');
+	const fs = require('fs-extra');
 	const path = require('path');
 	const defaults = require('defaults-deep');
 	const toSemver = require('to-semver');
@@ -13,12 +13,23 @@ module.exports = function build_config(cwd, config, profileName, cla) {
 	const chalk = require('chalk');
 	const root = cwd;
 	
-	if (!config) { return false; }
-
-	let source = path.join(root, config.folders.source);
-	if (!fs.existsSync(source)) {
-		console.log(chalk.bold.red('Source folder does not exist.'));
+	if (!config) { 
+		console.log(chalk.bold.red('Parcello configuration is missing. Unable to install.'));
 		return Error;
+	}
+
+	let sourceName = config.folders.source;
+	let source = path.join(root, sourceName);
+	if (!fs.existsSync(source)) {
+		console.log(chalk.bold.red('Source folder is missing.'));
+		try {
+			fs.ensureDirSync(source);
+			console.log(chalk.bold.green(`-> Created source folder named: ${sourceName}.`));
+		} catch(e) {
+			console.log(chalk.bold.red('Failed to create source folder.'));
+			console.log(e);
+			return Error;
+		}
 	}
 
 
@@ -31,7 +42,15 @@ module.exports = function build_config(cwd, config, profileName, cla) {
 			version = toSemver(folders, { includePrereleases: true, clean: false })[0];
 		} else {
 			console.log(chalk.bold.red('No version folders found.'));
-			return Error;
+			try {
+				fs.ensureDirSync(path.join(source, '0.0.1'));
+				version = '0.0.1';
+				console.log(chalk.bold.green(`-> Created version folder 0.0.1`));
+			} catch(e) {
+				console.log(chalk.bold.red('Failed to create version folder 0.0.1'));
+				version = null;
+				return Error;
+			}
 		}
 	}
 
@@ -42,8 +61,11 @@ module.exports = function build_config(cwd, config, profileName, cla) {
 	}
 
 	let versioned = semversioned(config, profileName, version);
+	
+	console.log('----------');
 	console.log('Selected source version: ' + version);
 	console.log('Selected build profile: ' + versioned.using);
+	console.log('----------');
 
 	let settings = versioned;
 	let profile = opath.get(settings, 'profile', {});

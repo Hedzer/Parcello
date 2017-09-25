@@ -1,6 +1,6 @@
 {
   "name": "parcello",
-  "version": "1.0.4",
+  "version": "1.1.4",
   "keywords": [
     "cli",
     "build",
@@ -62,6 +62,7 @@
     "gulp": "^3.9.1",
     "gulp-babel": "^6.1.2",
     "gulp-dereserve": "^0.2.1",
+    "gulp-install": "^1.1.0",
     "gulp-rename": "^1.2.2",
     "gulp-sourcemaps": "^1.6.0",
     "gulp-uglify": "^2.0.0",
@@ -83,6 +84,7 @@
     "semverbs": "^1.0.2",
     "simple-git": "^1.77.0",
     "to-semver": "^1.1.0",
+    "url-parse": "^1.1.9",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0"
   }
