@@ -241,6 +241,3 @@ None is selected so far, and no build process has been established yet.
 
 ##### documentation framework
 Is still on the process of being built.
-
-##### git integration
-Cloning & checking out git repos is still unavailable.
