@@ -81,7 +81,7 @@ jsonfile.readFile(packagePath, (err, config) => {
 			package: config,
 		};
 
-		if (!option.initiatory && !(settings === Error)) {
+		if (!option.initiatory && settings === Error) {
 			if (name === 'version' && Array.isArray(args) || !option.isCommand) { return; }
 			errors.push(option.name);	
 			return;
