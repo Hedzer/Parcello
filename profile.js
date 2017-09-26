@@ -12,13 +12,19 @@ module.exports = function build_config(cwd, config, profileName, cla) {
 	const semversioned = require('./profile/semversioned');
 	const chalk = require('chalk');
 	const root = cwd;
+
+	if ('init' in cla.options) {
+		return Error;
+	}
 	
 	if (!config) { 
 		console.log(chalk.bold.red('Parcello configuration is missing. Unable to install.'));
 		return Error;
 	}
 
-	let sourceName = config.folders.source;
+	let sourceName = opath.get(config, 'folders.source', false);
+	if (!sourceName) { return Error; }
+
 	let source = path.join(root, sourceName);
 	if (!fs.existsSync(source)) {
 		console.log(chalk.bold.red('Source folder is missing.'));

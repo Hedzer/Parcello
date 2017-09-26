@@ -11,10 +11,13 @@ module.exports = function task_bundle(cla) {
 	const rollup_alias = require('rollup-plugin-import-alias');
 	const defaults = require('defaults-deep');
 	const remaps = require('./bundle/remap');
+	const externalHelpers = require('babel-plugin-external-helpers');
+	const trailingCommas = require('babel-plugin-syntax-trailing-function-commas');
 	const settings = cla.settings;
 	const profile = cla.profile;
 	const config = cla.settings.config;
 
+	let maps = remaps(cla.directory, cla.here, settings.cache.maps, settings) || [];
 	return gulp.task('bundle', function(callback) {
 		console.log('Building: ' + profile.build.file);
 		return rollup({
@@ -24,7 +27,7 @@ module.exports = function task_bundle(cla) {
 			sourcemap: true,
 			plugins: [
 				rollup_alias({
-					Paths: remaps(cla.directory, cla.here, settings.cache.maps, settings),
+					Paths: maps,
 					Extensions: profile.extensions,
 				}),
 				rollup_babel({
@@ -37,8 +40,8 @@ module.exports = function task_bundle(cla) {
 						]
 					],
 					plugins: [
-						"external-helpers",
-						"syntax-trailing-function-commas"
+						externalHelpers,
+						trailingCommas
 					],
 					exclude: 'node_modules/**'
 				})

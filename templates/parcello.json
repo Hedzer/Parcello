@@ -28,7 +28,7 @@
 					"typings": true,
 					"composer": true,
 					"pip": true,
-					"git": true,
+					"git": true
 				},
 				"repos": {},
 				"remap": {},

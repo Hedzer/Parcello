@@ -5,6 +5,7 @@ module.exports = function task_external(cla) {
 	const fs = require('fs');
 	const getFiles = require('recursive-readdir');
 	const fsExtra = require('fs-extra');
+	const opath = require('object-path');
 	const profile = cla.profile;
 	const config = cla.settings.config;
 
@@ -12,7 +13,7 @@ module.exports = function task_external(cla) {
 	['ignore', 'copy'].forEach((key) => {
 		let result = {};
 		lists[key] = result;
-		let list = profile.external[key];
+		let list = opath.get(profile, `external.${key}`, []);
 
 		if (!('external' in profile)) { return; }
 		if (!Array.isArray(list)) { return; }

@@ -15,6 +15,7 @@ module.exports = function task_es6(cla) {
 	const profile = cla.profile;
 	const config = cla.settings.config;
 
+	let maps = remaps(cla.directory, cla.here, settings.cache.maps, settings) || [];
 	return gulp.task('bundle-es6', function(callback) {
 		console.log('Building: ' + profile.build.file);
 		return rollup({
@@ -24,7 +25,7 @@ module.exports = function task_es6(cla) {
 			sourcemap: true,
 			plugins: [
 				rollup_alias({
-					Paths: remaps(cla.directory, cla.here, settings.cache.maps, settings),
+					Paths: maps,
 					Extensions: profile.extensions,
 				})
 			]
