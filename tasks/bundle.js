@@ -16,6 +16,8 @@ module.exports = function task_bundle(cla) {
 	const settings = cla.settings;
 	const profile = cla.profile;
 	const config = cla.settings.config;
+	const node_modules = path.join(cla.here, 'node_modules');
+	const es2015 = path.join(node_modules, 'babel-preset-es2015');
 
 	let maps = remaps(cla.directory, cla.here, settings.cache.maps, settings) || [];
 	return gulp.task('bundle', function(callback) {
@@ -31,9 +33,10 @@ module.exports = function task_bundle(cla) {
 					Extensions: profile.extensions,
 				}),
 				rollup_babel({
+					babelrc: false,
 					presets: [
 						[
-							"es2015",
+							es2015,
 							{
 								"modules": false
 							}
