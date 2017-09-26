@@ -62,7 +62,7 @@ module.exports = function task_init(cla) {
 		});
 
 		//copy & rename API
-		let destination = path.join(cwd, answers.source, answers.sourceFile);
+		let destination = path.join(cwd, answers.source, answers.version, answers.sourceFile);
 		if (!fs.existsSync(destination)) {	
 			fs.copySync(path.join(__dirname, '../templates/API.js'), destination)
 			.then(() => {})
