@@ -64,11 +64,11 @@ module.exports = function task_init(cla) {
 		//copy & rename API
 		let destination = path.join(cwd, answers.source, answers.version, answers.sourceFile);
 		if (!fs.existsSync(destination)) {	
-			fs.copySync(path.join(__dirname, '../templates/API.js'), destination)
+			fs.copySync(path.join(__dirname, '../templates/entry.js'), destination)
 			.then(() => {})
 			.catch(() => {
 				console.log(chalk.bold.red(' ERROR: '));
-				console.log(chalk.bold.red(' Unable to copy API template to ' + destination));
+				console.log(chalk.bold.red(' Unable to copy entry template to ' + destination));
 			});
 		}
 

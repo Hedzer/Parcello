@@ -13,7 +13,7 @@ let question = {
 		let pkg = cla.package;
 		if (opath.has(pkg, question.setting)) { question.default = opath.get(pkg, question.setting); }
 	},
-	default: 'API.js',
+	default: 'entry.js',
 	help: 'The file name for the API code inhabiting the namespace. Usually contains an Object or Class with properties and methods that will be exposed.',
 	setting: 'parcello.profiles.default.source.file',
 	validate: (answer) => {
