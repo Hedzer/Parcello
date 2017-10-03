@@ -107,10 +107,14 @@ module.exports = function remap(cwd, here, additional, settings) { //will need t
 				if (isExternal) {
 					packages[`/${namespace}/${sourceFolder}`] = externalPath;
 					packages[`/${folder.name}/${sourceFolder}`] = externalPath;
+					packages[`${namespace}/${sourceFolder}`] = externalPath;
+					packages[`${folder.name}/${sourceFolder}`] = externalPath;
 					return;
 				}
 				packages[`/${namespace}`] = folderPath;
 				packages[`/${folder.name}`] = folderPath;
+				packages[`${namespace}`] = folderPath;
+				packages[`${folder.name}`] = folderPath;
 				return;
 			}
 

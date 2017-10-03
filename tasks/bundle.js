@@ -9,6 +9,7 @@ module.exports = function task_bundle(cla) {
 	const rollup = require('rollup-stream');
 	const rollup_babel = require('rollup-plugin-babel');
 	const rollup_alias = require('rollup-plugin-import-alias');
+	const rollup_node_resolve = require('rollup-plugin-node-resolve');
 	const defaults = require('defaults-deep');
 	const remaps = require('./bundle/remap');
 	const externalHelpers = require('babel-plugin-external-helpers');
@@ -17,7 +18,7 @@ module.exports = function task_bundle(cla) {
 	const profile = cla.profile;
 	const config = cla.settings.config;
 	const node_modules = path.join(cla.here, 'node_modules');
-	const es2015 = path.join(node_modules, 'babel-preset-es2015');
+	const es2015 = path.join(node_modules, 'babel-preset-env');
 
 	let maps = remaps(cla.directory, cla.here, settings.cache.maps, settings) || [];
 	return gulp.task('bundle', function(callback) {
@@ -28,6 +29,7 @@ module.exports = function task_bundle(cla) {
 			name: config.namespace,
 			sourcemap: true,
 			plugins: [
+				rollup_node_resolve(),
 				rollup_alias({
 					Paths: maps,
 					Extensions: profile.extensions,
