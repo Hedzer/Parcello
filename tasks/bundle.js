@@ -12,6 +12,7 @@ module.exports = function task_bundle(cla) {
 	const rollup_node_resolve = require('rollup-plugin-node-resolve');
 	const defaults = require('defaults-deep');
 	const remaps = require('./bundle/remap');
+	const virtuals = require('./bundle/virtuals')(cla);
 	const externalHelpers = require('babel-plugin-external-helpers');
 	const trailingCommas = require('babel-plugin-syntax-trailing-function-commas');
 	const settings = cla.settings;
@@ -29,6 +30,7 @@ module.exports = function task_bundle(cla) {
 			name: config.namespace,
 			sourcemap: true,
 			plugins: [
+				virtuals,
 				rollup_node_resolve(),
 				rollup_alias({
 					Paths: maps,

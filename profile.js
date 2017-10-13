@@ -77,7 +77,8 @@ module.exports = function build_config(cwd, config, profileName, cla) {
 	let profile = opath.get(settings, 'profile', {});
 	settings.cache = {
 		maps: {},
-		version: version || 'none'
+		version: version || 'none',
+		profile: versioned.using,
 	};
 
 	//convert maps to absolute

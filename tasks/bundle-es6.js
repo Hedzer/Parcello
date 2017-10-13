@@ -9,8 +9,10 @@ module.exports = function task_es6(cla) {
 	const rollup = require('rollup-stream');
 	const rollup_babel = require('rollup-plugin-babel');
 	const rollup_alias = require('rollup-plugin-import-alias');
+	const rollup_node_resolve = require('rollup-plugin-node-resolve');
 	const defaults = require('defaults-deep');
 	const remaps = require('./bundle/remap');
+	const virtuals = require('./bundle/virtuals')(cla);
 	const settings = cla.settings;
 	const profile = cla.profile;
 	const config = cla.settings.config;
@@ -24,6 +26,8 @@ module.exports = function task_es6(cla) {
 			name: config.namespace,
 			sourcemap: true,
 			plugins: [
+				virtuals(),
+				rollup_node_resolve(),
 				rollup_alias({
 					Paths: maps,
 					Extensions: profile.extensions,

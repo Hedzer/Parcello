@@ -13,7 +13,49 @@ const jsonfile = require('jsonfile');
 const chalk = require('chalk');
 const packagePath = path.join(directory, 'package.json');
 
+//read options
+let files = fs.readdirSync(__dirname + '/options');
+let options = {};
+
+//sort by commands first, then alpha
+files.sort((a, b) => {
+	let optionA = require(`./options/${a}`);
+	let optionB = require(`./options/${b}`);
+	if (optionA.isCommand === optionB.isCommand) {
+		return (a > b ? 1 : -1);
+	}
+
+	if (optionA.isCommand && !optionB.isCommand) { return -1; }
+
+	if (!optionA.isCommand && optionB.isCommand) { return 1; }
+
+});
+
+//select files, not folders
+files = files.filter(file => fs.statSync(__dirname + `/options/${file}`).isFile());
+
+//add coptions to menu
+files.forEach((file) => {
+	let option = require(`./options/${file}`);
+	if (!option || !option.name) { return; }
+
+	options[option.name] = option;
+	let aliases = []; 
+	if (option.shorthand && !option.isCommand) {
+		aliases.push(`-${option.shorthand}`);
+	}
+	aliases.push((option.isCommand ? '' : '--') + `${option.name}`);
+	if (option.isCommand) {
+		cli.option(aliases.join(), option.description, { isDefault: option.isDefault });
+		return;
+	}
+	cli.option(aliases.join() + (option.args ? ' ' + option.args : ''), option.description, option.parser, option.default); 
+});
+
+cli.parse(process.argv);
+
 if (!fs.existsSync(packagePath)) {
+	if ('help' in cli) { return; }
 	console.log(chalk.bold.red(` package.json is missing from ${directory}\n Please run initialize npm in this directory before continuing.`));
 	return;
 }
@@ -24,44 +66,7 @@ jsonfile.readFile(packagePath, (err, config) => {
 		return;
 	}
 
-	//read options
-	let files = fs.readdirSync(__dirname + '/options');
-	let options = {};
 
-	//sort by commands first, then alpha
-	files.sort((a, b) => {
-		let optionA = require(`./options/${a}`);
-		let optionB = require(`./options/${b}`);
-		if (optionA.isCommand === optionB.isCommand) {
-			return (a > b ? 1 : -1);
-		}
-		if (optionA.isCommand && !optionB.isCommand) { return -1; }
-		if (!optionA.isCommand && optionB.isCommand) { return 1; }
-
-	});
-
-	//select files, not folders
-	files = files.filter(file => fs.statSync(__dirname + `/options/${file}`).isFile());
-
-	//add coptions to menu
-	files.forEach((file) => {
-		let option = require(`./options/${file}`);
-		if (!option || !option.name) { return; }
-
-		options[option.name] = option;
-		let aliases = []; 
-		if (option.shorthand && !option.isCommand) {
-			aliases.push(`-${option.shorthand}`);
-		}
-		aliases.push((option.isCommand ? '' : '--') + `${option.name}`);
-		if (option.isCommand) {
-			cli.option(aliases.join(), option.description, { isDefault: option.isDefault });
-			return;
-		}
-		cli.option(aliases.join() + (option.args ? ' ' + option.args : ''), option.description, option.parser, option.default); 
-	});
-
-	cli.parse(process.argv);
 	let settings = getProfile(directory, config.parcello, cli.profile, cli);
 
 	let errors = [];
