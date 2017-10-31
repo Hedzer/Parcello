@@ -12,15 +12,20 @@ module.exports = function remap(cwd, here, additional, settings) { //will need t
 	if (typeof additional !== 'object' || additional === null) { additional = {}; }
 
 	let profile = settings.profile;
-	let packages = { '/Parcello': here };
+	let packages = { 
+		'/Parcello': here,
+		'Parcello': here,
+	};
 	let canSearch = opath.get(settings, 'profile.dependency.search.active', true);
 	let useCache = opath.get(settings, 'profile.dependency.search.cache', true);
 	if (opath.has(settings, 'namespace')) {
 		let namespace = opath.get(settings, 'namespace');
 		packages[`/${namespace}`] = cwd;
+		packages[`${namespace}`] = cwd;
 	}
 	let cwdName = cwd.match(/([^\/]*)\/*$/)[1];
 	packages[`/${cwdName}`] = cwd;
+	packages[`${cwdName}`] = cwd;
 
 	//aggregate folders we're going to search through
 	let defaultFolder = opath.get(settings, 'config.folders.dependency', 'dependencies');
