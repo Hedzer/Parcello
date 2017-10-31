@@ -24,7 +24,6 @@ module.exports = function task_bundle(cla) {
 	let maps = remaps(cla.directory, cla.here, settings.cache.maps, settings) || [];
 	return gulp.task('bundle', function(callback) {
 		console.log('Building: ' + profile.build.file);
-		console.log(maps);
 		return rollup({
 			input: profile.entry,
 			format: 'umd',

@@ -79,6 +79,7 @@ module.exports = function remap(cwd, here, additional, settings) { //will need t
 	//verify cache. hash the additional maps + mtime of packages
 	let checksum;
 	if (useCache) {
+		let cThis = crc.crc32(fs.readFileSync(__filename)).toString(16);
 		let cSettings = crc.crc32(JSON.stringify(settings)).toString(16);
 		let cAdditonal = crc.crc32(Object.keys(additional).sort().reduce((result, current) => {
 			result.push([current, additional[current]].join());
@@ -86,7 +87,7 @@ module.exports = function remap(cwd, here, additional, settings) { //will need t
 		}, []).join()).toString(16);
 		let cTimes = crc.crc32(mtimes.join()).toString(16);
 		let cHere = crc.crc32(here).toString(16);
-		checksum = crc.crc32(cSettings + cAdditonal + cTimes + cHere).toString(16);
+		checksum = crc.crc32(cSettings + cAdditonal + cTimes + cHere + cThis).toString(16);
 		
 		if (checksum === modified) {
 			return cache.maps;
