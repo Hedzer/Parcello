@@ -1,9 +1,11 @@
 add git clone support
 add git checkout support
-switch profiles to use semver names automatically as defaults
+auto create folders for Applications, Roles, Features, Pages, Components, Constants
+auto create settings file
 add gitignore for dependencies folder
 add support for libraries, not just API exposing projects
 change dev to be a watcher, add --no-watch switch
 add building docs
 add running tests
 add gui version
+re-write to be pretty
