@@ -26,7 +26,7 @@ module.exports = function task_es6(cla) {
 			name: config.namespace,
 			sourcemap: true,
 			plugins: [
-				virtuals(),
+				virtuals,
 				rollup_node_resolve(),
 				rollup_alias({
 					Paths: maps,
