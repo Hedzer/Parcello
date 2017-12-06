@@ -15,6 +15,7 @@ module.exports = function task_bundle(cla) {
 	const virtuals = require('./bundle/virtuals')(cla);
 	const externalHelpers = require('babel-plugin-external-helpers');
 	const trailingCommas = require('babel-plugin-syntax-trailing-function-commas');
+	const asyncToPromises = require('babel-plugin-async-to-promises');
 	const settings = cla.settings;
 	const profile = cla.profile;
 	const config = cla.settings.config;
@@ -47,6 +48,7 @@ module.exports = function task_bundle(cla) {
 						]
 					],
 					plugins: [
+						asyncToPromises,
 						externalHelpers,
 						trailingCommas
 					],
