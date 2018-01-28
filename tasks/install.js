@@ -49,9 +49,40 @@ module.exports = function task_install(cla) {
 				return (acc || value.private);
 			}, false);
 			
+			function getRepos(credentials) {
+				names.forEach((name) => {
+					let repo = repos[name];
+					let url = new URL(repo.remote);
+					let remote = repo.remote;
+					let original = remote;
+					let hostname = url.hostname;
+					if (credentials && credentials.username && credentials.password) {
+						url.set('username', credentials.username);
+						url.set('password', credentials.password);
+						remote = url.toString();
+					}
+					let folder = path.join(directory, dependencies, name);
+					if (fs.existsSync(folder)) { fs.removeSync(folder);	}
+					git().clone(remote, folder)
+					.then((d) => {
+						console.log(chalk.bold.green(`Successfully cloned: ${original} to ${name}`));
+					})
+					.catch((e) => {
+						console.log(chalk.bold.red(`Failed to clone: ${original} to ${name}`));
+						console.log(chalk.bold.red(String(e)));
+					});
+				});
+
+				//strip out bools
+				Object.keys(settings).forEach((k) => {
+					if (typeof settings[k] === 'boolean') { delete settings[k]; } 
+				});
+				return gulp.src(files).pipe(install(settings));
+			}
+
 			if (hasPrivateRepos) {
 				console.log('Some of the git repos are marked as private, requiring authentication.');
-				inquirer.prompt([
+				return inquirer.prompt([
 					{
 						name: 'username',
 						message: 'username:',
@@ -67,37 +98,10 @@ module.exports = function task_install(cla) {
 							return !!value;
 						},
 					}
-				]).then((credentials) => {			
-					names.forEach((name) => {
-						let repo = repos[name];
-						let url = new URL(repo.remote);
-						let remote = repo.remote;
-						let original = remote;
-						let hostname = url.hostname;
-						if (credentials.username && credentials.password) {
-							url.set('username', credentials.username);
-							url.set('password', credentials.password);
-							remote = url.toString();
-						}
-						let folder = path.join(directory, dependencies, name);
-						if (fs.existsSync(folder)) { fs.removeSync(folder);	}
-						git().clone(remote, folder)
-						.then((d) => {
-							console.log(chalk.bold.green(`Successfully cloned: ${original} to ${name}`));
-						})
-						.catch((e) => {
-							console.log(chalk.bold.red(`Failed to clone: ${original} to ${name}`));
-							console.log(chalk.bold.red(String(e)));
-						});
-					});
-
-					//strip out bools
-					Object.keys(settings).forEach((k) => {
-						if (typeof settings[k] === 'boolean') { delete settings[k]; } 
-					});
-					return gulp.src(files).pipe(install(settings));
-				});
+				]).then(getRepos);
 			}
+
+			return getRepos();
 
 		}
 
