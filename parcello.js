@@ -55,7 +55,6 @@ files.forEach((file) => {
 cli.parse(process.argv);
 
 if (!fs.existsSync(packagePath)) {
-	if ('help' in cli) { return; }
 	console.log(chalk.bold.red(` package.json is missing from ${directory}\n Please run initialize npm in this directory before continuing.`));
 	return;
 }
